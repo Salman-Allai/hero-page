@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mohammad Salman Allai — Responsive Hero Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Cabinet+Grotesk:wght@300;400;500;700&family=Instrument+Mono&display=swap" rel="stylesheet"/>
+  <!-- Fallback if Clash Display not available via google -->
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,600,700&f[]=cabinet-grotesk@300,400,500,700&display=swap" rel="stylesheet"/>
+
+  <style>
+
+    /* ================================================================
+       CSS CUSTOM PROPERTIES
+       ================================================================ */
+    :root {
+      --bg:           #07090f;
+      --bg2:          #0d1117;
+      --surface:      #111827;
+      --border:       rgba(255,255,255,0.07);
+      --accent:       #4fffb0;      /* electric mint */
+      --accent2:      #ff4f7b;      /* hot coral */
+      --accent3:      #4f8fff;      /* sky blue */
+      --text:         #f0f4ff;
+      --muted:        #6b7a99;
+      --font-head:    'Clash Display', 'Cabinet Grotesk', sans-serif;
+      --font-body:    'Cabinet Grotesk', sans-serif;
+      --font-mono:    'Instrument Mono', 'Fira Code', monospace;
+    }
+
+    /* ================================================================
+       RESET
+       ================================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ================================================================
+       NAVBAR  ← uses Flexbox: display:flex, justify-content, align-items
+       ================================================================ */
+    nav {
+      /* FLEXBOX: horizontal row, space between brand and links */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,9,15,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* Nav links — FLEXBOX: horizontal row with gap */
+    .nav-links {
+      display: flex;           /* FLEXBOX */
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 0.45rem 1.1rem;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      color: var(--accent) !important;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--accent) !important;
+      color: var(--bg) !important;
+    }
+
+    /* MOBILE NAV — hamburger button */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ================================================================
+       HERO SECTION ← main Flexbox demonstration
+       ================================================================ */
+    .hero {
+      /* FLEXBOX: two-column side by side on desktop */
+      display: flex;
+      flex-direction: row;          /* horizontal on desktop */
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+
+      min-height: calc(100vh - 65px);
+      padding: 5rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ── HERO LEFT ── */
+    .hero-content {
+      /* FLEXBOX: vertical stack for text content */
+      display: flex;
+      flex-direction: column;       /* stack vertically */
+      align-items: flex-start;
+      gap: 1.5rem;
+
+      flex: 1;                      /* grow to fill space */
+      max-width: 560px;
+      animation: heroIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .hero-badge {
+      /* FLEXBOX: inline badge with icon + text */
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(79,255,176,0.3);
+      background: rgba(79,255,176,0.06);
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .hero-title .line2 {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(240,244,255,0.4);
+    }
+
+    .hero-title .highlight {
+      color: var(--accent);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title .highlight::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 2px;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underlineIn 0.6s 0.8s ease forwards;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 480px;
+    }
+
+    /* FLEXBOX: button row */
+    .hero-actions {
+      display: flex;              /* FLEXBOX */
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;            /* wrap on small screens */
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(79,255,176,0.25);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* FLEXBOX: stats row */
+    .hero-stats {
+      display: flex;           /* FLEXBOX */
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-num span { color: var(--accent); }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+    }
+
+    /* ── HERO RIGHT — visual card ── */
+    .hero-visual {
+      flex: 0 0 auto;
+      width: 360px;
+      animation: heroIn 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,255,176,0.12), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* FLEXBOX: card header */
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Dots row — FLEXBOX */
+    .card-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .card-dots span:nth-child(1) { background: #ff5f57; }
+    .card-dots span:nth-child(2) { background: #febc2e; }
+    .card-dots span:nth-child(3) { background: #28c840; }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .card-body {
+      padding: 1.75rem 1.5rem;
+    }
+
+    /* FLEXBOX: avatar + name row */
+    .card-identity {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(79,255,176,0.2), rgba(79,143,255,0.2));
+      border: 2px solid rgba(79,255,176,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .card-name {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-role {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.06em;
+    }
+
+    /* Skills in card — FLEXBOX wrap */
+    .card-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .skill-pill {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+    }
+
+    .skill-pill.green  { background: rgba(79,255,176,0.1); color: var(--accent); border: 1px solid rgba(79,255,176,0.2); }
+    .skill-pill.blue   { background: rgba(79,143,255,0.1); color: var(--accent3); border: 1px solid rgba(79,143,255,0.2); }
+    .skill-pill.coral  { background: rgba(255,79,123,0.1); color: var(--accent2); border: 1px solid rgba(255,79,123,0.2); }
+
+    /* Code snippet block */
+    .code-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .code-block .c-green  { color: var(--accent); }
+    .code-block .c-blue   { color: var(--accent3); }
+    .code-block .c-coral  { color: var(--accent2); }
+    .code-block .c-yellow { color: #f9e05b; }
+
+    /* Status indicator row */
+    .card-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+    }
+
+    /* ================================================================
+       FEATURES STRIP  ← Flexbox: equal columns
+       ================================================================ */
+    .features {
+      /* FLEXBOX: equal width columns */
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0;
+
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-item {
+      /* FLEXBOX: vertical stack inside each feature */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+
+      flex: 1;                      /* equal width */
+      padding: 2rem 2.5rem;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .feature-item:last-child { border-right: none; }
+    .feature-item:hover { background: rgba(255,255,255,0.02); }
+
+    .feature-icon {
+      font-size: 1.4rem;
+    }
+
+    .feature-title {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ================================================================
+       TECH SCROLL STRIP  ← Flexbox row with gap
+       ================================================================ */
+    .tech-strip {
+      /* FLEXBOX: scrollable horizontal row */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+
+      padding: 2rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tech-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 0.5rem;
+    }
+
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .tech-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(79,255,176,0.05);
+    }
+
+    /* ================================================================
+       FOOTER ← Flexbox: space-between layout
+       ================================================================ */
+    footer {
+      /* FLEXBOX: spread across full width */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      padding: 1.5rem 2.5rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* Social links row — FLEXBOX */
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .footer-socials a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-socials a:hover { color: var(--accent); }
+
+    /* ================================================================
+       BACKGROUND DECORATIONS
+       ================================================================ */
+    .bg-glow-1 {
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,255,176,0.05), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,143,255,0.05), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid overlay */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* All content above bg */
+    nav, .hero, .features, .tech-strip, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ================================================================
+       ANIMATIONS
+       ================================================================ */
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    @keyframes underlineIn {
+      to { transform: scaleX(1); }
+    }
+
+    /* ================================================================
+       ██████████████████████████████████████████████████████████████
+       RESPONSIVE — MOBILE FIRST MEDIA QUERIES
+       ██████████████████████████████████████████████████████████████
+       ================================================================ */
+
+    /* ── Tablet: hide some nav links ── */
+    @media (max-width: 860px) {
+      .hero {
+        gap: 2.5rem;
+        padding: 3rem 2rem;
+      }
+
+      .hero-visual {
+        width: 300px;
+      }
+    }
+
+    /* ── Mobile: FLEXBOX changes direction ── */
+    @media (max-width: 720px) {
+
+      /* NAV: hide links, show hamburger */
+      .nav-links {
+        display: none;               /* hide on mobile */
+        flex-direction: column;      /* stack vertically when open */
+        align-items: flex-start;
+        gap: 1rem;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: rgba(7,9,15,0.97);
+        backdrop-filter: blur(20px);
+        padding: 1.5rem 2.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        display: flex;               /* show when toggled */
+      }
+
+      .nav-toggle {
+        display: flex;               /* show hamburger */
+      }
+
+      /* HERO: FLEXBOX direction changes to column */
+      .hero {
+        flex-direction: column;      /* ← KEY RESPONSIVE CHANGE */
+        align-items: flex-start;
+        justify-content: center;
+        text-align: left;
+        padding: 3rem 1.5rem;
+        min-height: auto;
+        gap: 2.5rem;
+      }
+
+      .hero-content {
+        max-width: 100%;
+        order: 2;                   /* text below visual on mobile */
+      }
+
+      .hero-visual {
+        order: 1;                   /* visual on top on mobile */
+        width: 100%;
+      }
+
+      /* ACTIONS: still row but wrap */
+      .hero-actions {
+        flex-wrap: wrap;
+      }
+
+      .btn-primary, .btn-secondary {
+        flex: 1;
+        justify-content: center;
+        min-width: 140px;
+      }
+
+      /* STATS: still row, smaller gap */
+      .hero-stats {
+        gap: 1.25rem;
+      }
+
+      .stat-num { font-size: 1.3rem; }
+
+      /* FEATURES: stack to column */
+      .features {
+        flex-direction: column;     /* ← stack vertically on mobile */
+      }
+
+      .feature-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 1.5rem;
+      }
+      .feature-item:last-child { border-bottom: none; }
+
+      /* FOOTER: stack to column, center */
+      footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+      }
+    }
+
+    /* ── Small Mobile ── */
+    @media (max-width: 400px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero { padding: 2rem 1.25rem; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-stats { flex-wrap: wrap; gap: 1rem; }
+      .tech-strip { padding: 1.5rem 1.25rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Background decorations -->
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ============================================================
+       NAVBAR  —  display:flex, justify-content:space-between
+       ============================================================ -->
+  <nav>
+    <div class="nav-brand">MSA · Portfolio</div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#features">Skills</a></li>
+      <li><a href="#tech">Tech</a></li>
+      <li><a href="mailto:Salmanallaie@gmail.com" class="nav-cta">Hire Me</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION  —  display:flex, flex-direction:row → column
+       ============================================================ -->
+  <section class="hero" id="hero">
+
+    <!-- LEFT: text content (flex-direction: column inside) -->
+    <div class="hero-content">
+
+      <span class="hero-badge">Available for opportunities</span>
+
+      <h1 class="hero-title">
+        Mohammad
+        <span class="line2">Salman</span>
+        <span class="highlight">Allai</span>
+      </h1>
+
+      <p class="hero-desc">
+        Computer Science Engineer &amp; Full-Stack Developer from Bangalore, India.
+        Building intelligent, user-centric web applications powered by modern
+        technologies and AI.
+      </p>
+
+      <!-- Button row — display:flex, flex-direction:row -->
+      <div class="hero-actions">
+        <a href="https://github.com/SalmanAllai" target="_blank" class="btn-primary">
+          View Projects →
+        </a>
+        <a href="mailto:Salmanallaie@gmail.com" class="btn-secondary">
+          Contact Me
+        </a>
+      </div>
+
+      <!-- Stats row — display:flex, flex-direction:row -->
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">8.0<span>+</span></div>
+          <div class="stat-label">CGPA</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">2<span>+</span></div>
+          <div class="stat-label">Internships</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label">Certs</div>
+        </div>
+      </div>
+
+    </div><!-- end hero-content -->
+
+    <!-- RIGHT: visual profile card -->
+    <div class="hero-visual">
+      <div class="profile-card">
+
+        <!-- Card header dots — display:flex -->
+        <div class="card-header">
+          <div class="card-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="card-label">salman.dev</span>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Identity row — display:flex, align-items:center -->
+          <div class="card-identity">
+            <div class="card-avatar">MS</div>
+            <div>
+              <div class="card-name">Mohammad Salman</div>
+              <div class="card-role">Full-Stack Developer · AI Enthusiast</div>
+            </div>
+          </div>
+
+          <!-- Skills pills — display:flex, flex-wrap:wrap -->
+          <div class="card-skills">
+            <span class="skill-pill green">React.js</span>
+            <span class="skill-pill blue">Node.js</span>
+            <span class="skill-pill green">Next.js</span>
+            <span class="skill-pill coral">Python</span>
+            <span class="skill-pill blue">MongoDB</span>
+            <span class="skill-pill coral">Gen AI</span>
+          </div>
+
+          <!-- Code snippet -->
+          <div class="code-block">
+            <span class="c-green">const</span> developer = {<br/>
+            &nbsp;&nbsp;<span class="c-blue">name</span>: <span class="c-yellow">"Salman Allai"</span>,<br/>
+            &nbsp;&nbsp;<span class="c-blue">role</span>: <span class="c-yellow">"Full-Stack Dev"</span>,<br/>
+            &nbsp;&nbsp;<span class="c-blue">cgpa</span>: <span class="c-coral">8.0</span>,<br/>
+            &nbsp;&nbsp;<span class="c-blue">openToWork</span>: <span class="c-green">true</span><br/>
+            }
+          </div>
+
+          <!-- Status row — display:flex, align-items:center -->
+          <div class="card-status">
+            <div class="status-dot"></div>
+            Available for full-time roles · Bangalore
+          </div>
+
+        </div>
+      </div>
+    </div><!-- end hero-visual -->
+
+  </section><!-- end hero -->
+
+  <!-- ============================================================
+       FEATURES STRIP  —  display:flex, flex-direction:row → column
+       ============================================================ -->
+  <div class="features" id="features">
+    <div class="feature-item">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Fast &amp; Responsive</div>
+      <div class="feature-desc">Building performant web apps that work beautifully on every screen size using Flexbox &amp; CSS Grid.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">AI Integration</div>
+      <div class="feature-desc">Completed Gen AI training from PrepInsta &amp; Edunet. Experienced integrating AI features into real apps.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🗄️</div>
+      <div class="feature-title">Full-Stack Ready</div>
+      <div class="feature-desc">Comfortable across the entire stack — from React frontends to Node.js APIs and MongoDB databases.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">☁️</div>
+      <div class="feature-title">Cloud Certified</div>
+      <div class="feature-desc">AWS Solution Architecture simulation completed. Experience deploying on AWS, Google Cloud &amp; Netlify.</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TECH STRIP  —  display:flex, flex-wrap:wrap
+       ============================================================ -->
+  <div class="tech-strip" id="tech">
+    <span class="tech-label">Stack →</span>
+    <span class="tech-tag">HTML5</span>
+    <span class="tech-tag">CSS3</span>
+    <span class="tech-tag">JavaScript</span>
+    <span class="tech-tag">React.js</span>
+    <span class="tech-tag">Next.js</span>
+    <span class="tech-tag">Node.js</span>
+    <span class="tech-tag">Express.js</span>
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">MongoDB</span>
+    <span class="tech-tag">REST API</span>
+    <span class="tech-tag">AWS</span>
+    <span class="tech-tag">GitHub</span>
+    <span class="tech-tag">Postman</span>
+  </div>
+
+  <!-- ============================================================
+       FOOTER  —  display:flex, justify-content:space-between
+       ============================================================ -->
+  <footer>
+    <span>© 2026 MOHAMMAD SALMAN ALLAI</span>
+    <span>ASSIGNMENT 4 · RESPONSIVE HERO PAGE</span>
+    <!-- Social links — display:flex -->
+    <div class="footer-socials">
+      <a href="https://github.com/SalmanAllai" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/Salman-Allai" target="_blank">LinkedIn</a>
+      <a href="mailto:Salmanallaie@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JS — hamburger toggle
+       ============================================================ -->
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+    });
+    // close menu on link click
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => links.classList.remove('open'));
+    });
+  </script>
+
+</body>
+</html>
